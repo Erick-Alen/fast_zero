@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "fast-zero"
+version = "0.1.0"
+description = ""
+authors = ["Erick Ricioli <erick.alen@live.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.12.3"
+fastapi = "^0.111.0"
+coverage = "^7.5.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.0"
+pytest-cov = "^5.0.0"
+taskipy = "^1.12.2"
+ruff = "^0.4.4"
+httpx = "^0.27.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 79
+extend-include = ['migrations']
+indent-width = 4
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = '-p no:warnings'
+
+[tool.taskipy.tasks]
+lint = 'ruff check . && ruff check . --diff'
+# ruff check --diff: Mostra o que precisa ser alterado no código para que as
+# boas práticas sejam seguidas
+# ruff check: Mostra os códigos de infrações de boas práticas
+# &&: O duplo & faz com que a segunda parte do comando só seja executada se a
+# primeira não der erro. Sendo assim, enquanto o --diff apresentar erros, ele 
+# não executará o check
+format = 'ruff check . --fix && ruff format .'
+#ruff check --fix: Faz algumas correções de boas práticas automaticamente
+#ruff format: Executa a formatação do código em relação as convenções de estilo de código
+run = 'fastapi dev fast_zero/app.py'
+#run: executa o servidor de desenvolvimento do FastAPI
+pre_test = 'task lint'
+#pre_test: executa a camada de lint antes de executar os testes
+test = 'pytest -s -x --cov=fast_zero -vv'
+#test: executa os testes com pytest de forma verbosa (-vv) e adiciona nosso código como base de cobertura
+post_test = 'coverage html'
+#post_test: gera um report de cobertura após os testes
