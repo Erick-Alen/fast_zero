@@ -50,7 +50,7 @@ lint = 'ruff check . && ruff check . --diff'
 format = 'ruff check . --fix && ruff format .'
 #ruff check --fix: Faz algumas correções de boas práticas automaticamente
 #ruff format: Executa a formatação do código em relação as convenções de estilo de código
-run = 'fastapi dev fast_zero/app.py'
+dev = 'fastapi dev fast_zero/app.py'
 #run: executa o servidor de desenvolvimento do FastAPI
 pre_test = 'task lint'
 #pre_test: executa a camada de lint antes de executar os testes
