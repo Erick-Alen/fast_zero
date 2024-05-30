@@ -19,7 +19,8 @@ ALGORITHM = 'HS256'
 EXPIRES_AT = 30
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
+"""declare the route path that generates the token"""
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='auth/token')
 
 
 async def get_current_user(
