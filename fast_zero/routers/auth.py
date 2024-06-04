@@ -11,6 +11,7 @@ from fast_zero.models import User
 from fast_zero.schemas import Token
 from fast_zero.security import (
     create_access_token,
+    get_current_user,
     verify_password,
 )
 
@@ -30,16 +31,23 @@ def login_for_access_token(
 
     if not user:
         raise HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST,
+            status_code=HTTPStatus.UNAUTHORIZED,
             detail='Incorrect email or password',
         )
 
     if not verify_password(form_data.password, user.password):
         raise HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST,
+            status_code=HTTPStatus.UNAUTHORIZED,
             detail='Incorrect email or password',
         )
 
     access_token = create_access_token(data={'sub': user.email})
 
     return {'access_token': access_token, 'token_type': 'bearer'}
+
+
+@router.post('/refresh_token', response_description=Token)
+def refresh_access_token(user: User = Depends(get_current_user)):
+    new_access_token = create_access_token(data={'sub': user.email})
+
+    return {'access_token': new_access_token, 'token_type': 'bearer'}
