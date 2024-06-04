@@ -52,18 +52,20 @@ def test_update_user(client, user, token):
     }
 
 
-# def test_update_user_not_found(client):
-#     response = client.put(
-#         '/users/2',
-#         json={
-#             'username': 'alice',
-#             'email': 'alice@example.com',
-#             'password': 'secret',
-#         },
-#     )  # Act
-
-#     assert response.status_code == HTTPStatus.NOT_FOUND
-#     assert response.json() == {'detail': 'User not found'}
+def test_update_user_with_wrong_user(client, other_user, token):
+    response = client.put(
+        f'/users/{other_user.id}',
+        headers={'Authorization': f'Bearer {token}'},
+        json={
+            'username': 'bob',
+            'email': 'bob@example.com',
+            'password': 'mynewpassword',
+        },
+    )
+    assert response.status_code == HTTPStatus.FORBIDDEN
+    assert response.json() == {
+        'detail': 'You do not have permission to update this user'
+    }
 
 
 def test_delete_user(client, user, token):
@@ -75,10 +77,13 @@ def test_delete_user(client, user, token):
     assert response.status_code == HTTPStatus.OK
 
 
-# def test_delete_user_not_found(client):
-#     response = client.delete(
-#         '/users/2',
-#     )  # Act
+def test_delete_user_with_wrong_user(client, other_user, token):
+    response = client.delete(
+        f'/users/{other_user.id}',
+        headers={'Authorization': f'Bearer {token}'},
+    )
 
-#     assert response.status_code == HTTPStatus.NOT_FOUND
-#     assert response.json() == {'detail': 'User not found'}
+    assert response.status_code == HTTPStatus.FORBIDDEN
+    assert response.json() == {
+        'detail': 'You do not have permission to update this user'
+    }
