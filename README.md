@@ -1,3 +1,17 @@
+## Libs Used in this project
+- Alembic
+- Docker
+- Factory-boy
+- FastAPI
+- Freezegun
+- Poetry
+- PostgreSQL
+- Pyenv
+- Pytest
+- Ruff
+- SQLAlchemy
+- Taskipy
+
 ### Project tools and most used command while developing:
 ### Taskipy:
 
@@ -39,3 +53,5 @@ Mostra umam página HTML ilustrando resumo da cobertura frente os testes realiza
 ### Sqlite:
  `sqlite3 database.db`
  `alembic revision --autogenerate -m "message"`
+
+###fac
