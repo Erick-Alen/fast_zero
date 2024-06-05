@@ -47,11 +47,17 @@ test: executa os testes com pytest de forma verbosa (-vv) e adiciona nosso códi
 Mostra umam página HTML ilustrando resumo da cobertura frente os testes realizados
 
 ### Alembic:
+ Initiate the already existent migrations
  `alembic init migrations`
+ Generate the migration with a message
  `alembic revision --autogenerate -m "message"`
+ Apply the migration generated to the database
+ `alembic upgrade head`
 
 ### Sqlite:
+Open the sqlite database
  `sqlite3 database.db`
- `alembic revision --autogenerate -m "message"`
+View the database schemas created
+ `.schema`
 
 ###fac
