@@ -11,6 +11,8 @@
 - Ruff
 - SQLAlchemy
 - Taskipy
+- Ignr
+- Gh
 
 ### Project tools and most used command while developing:
 ### Taskipy:
@@ -60,4 +62,15 @@ Open the sqlite database
 View the database schemas created
  `.schema`
 
+### Ignr:
+add .gitignore into python propject with the files and folders needed
+ `ignr -p python > .gitignore`
+
+### gh:
+add project into your github repo by an interactive CLI
+  `ignr -p python > .gitignore`
+
 ###fac
+
+- poetry shell ativa o ambiente virtual para que seja enxergue as dependencias  do projeto
+- poetry install instala as dependencias do projeto
