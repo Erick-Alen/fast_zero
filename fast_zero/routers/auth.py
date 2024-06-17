@@ -46,7 +46,7 @@ def login_for_access_token(
     return {'access_token': access_token, 'token_type': 'bearer'}
 
 
-@router.post('/refresh_token', response_description=Token)
+@router.post("/refresh_token", response_model=Token)
 def refresh_access_token(user: User = Depends(get_current_user)):
     new_access_token = create_access_token(data={'sub': user.email})
 
