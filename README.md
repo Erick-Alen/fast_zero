@@ -1,76 +1,53 @@
-## Libs Used in this project
-- Alembic
-- Docker
-- Factory-boy
-- FastAPI
-- Freezegun
-- Poetry
-- PostgreSQL
-- Pyenv
-- Pytest
-- Ruff
-- SQLAlchemy
-- Taskipy
-- Ignr
-- Gh
+# Fast Zero
 
-### Project tools and most used command while developing:
-### Taskipy:
+A tutorial-based FastAPI project for practicing an API beyond basic CRUD: user accounts, token authentication, personal to-dos, database migrations, and automated tests. The code is a learning project; it is not presented as a deployed product.
 
-`poetry run task lint` = 'ruff check . && ruff check . --diff'
+## What is implemented
 
-ruff check --diff: Mostra o que precisa ser alterado no código para que as boas práticas sejam seguidas
+- Create, list, update, and delete users.
+- Authenticate with a password and issue/refresh JWT access tokens.
+- Create, list, update, and delete to-dos scoped to the authenticated user.
+- Persist data with SQLAlchemy and PostgreSQL; manage schema changes with Alembic.
+- Exercise routes and database behavior with Pytest, factories, and test containers.
 
-ruff check: Mostra os códigos de infrações de boas práticas
+## Stack and structure
 
-**&&**: O duplo & faz com que a segunda parte do comando só seja executada se a primeira não der erro. Sendo assim, enquanto o --diff apresentar erros, ele não executará o check
+| Area | Tools |
+| --- | --- |
+| API and validation | Python 3.12.3, FastAPI, Pydantic |
+| Persistence | SQLAlchemy, PostgreSQL, Alembic |
+| Authentication | Passlib, PyJWT |
+| Quality | Pytest, pytest-cov, Ruff, Taskipy |
+| Local infrastructure | Docker Compose |
 
-- `poetry run task format` = 'ruff check . --fix && ruff format .'
+The `fast_zero/` package holds the API and application code. `migrations/` holds Alembic revisions; `tests/` holds automated tests.
 
-ruff check --fix: Faz algumas correções de boas práticas automaticamente
+## Development commands
 
-ruff format: Executa a formatação do código em relação as convenções de estilo de código
+The repository uses Poetry and Taskipy. After configuring PostgreSQL and the environment variables described below:
 
-- `poetry run task dev` = 'fastapi dev fast_zero/app.py'
+```bash
+poetry install
+poetry run task dev
+poetry run task lint
+poetry run task test
+```
 
-run: executa o servidor de desenvolvimento do FastAPI
+The `dev` task runs `fastapi dev fast_zero/app.py`. The test task runs Pytest with coverage. The repository also defines `format` and `post_test` tasks.
 
+## Configuration
 
-- `poetry run task pre_test` = 'task lint'
+`fast_zero/settings.py` requires these environment variables:
 
-pre_test: executa a camada de lint antes de executar os testes
+| Variable | Purpose |
+| --- | --- |
+| `DATABASE_URL` | SQLAlchemy connection string for PostgreSQL |
+| `SECRET_KEY` | Key used to sign access tokens |
+| `ALGORITHM` | JWT signing algorithm |
+| `ACCESS_TOKEN_EXPIRES_AT` | Access-token lifetime setting |
 
+The settings class reads a local `.env` file. Use a development secret and keep it out of version control. The Compose file defines a PostgreSQL service, but its app service currently passes only `DATABASE_URL`; the other required settings must also be supplied before relying on the full Compose stack.
 
-- `poetry run task test` = 'pytest -s -x --cov=fast_zero -vv'
+## What this project demonstrates
 
-test: executa os testes com pytest de forma verbosa (-vv) e adiciona nosso código como base de cobertura
-
-- `poetry run task post_test` = 'coverage html'
-Mostra umam página HTML ilustrando resumo da cobertura frente os testes realizados
-
-### Alembic:
- Initiate the already existent migrations
- `alembic init migrations`
- Generate the migration with a message
- `alembic revision --autogenerate -m "message"`
- Apply the migration generated to the database
- `alembic upgrade head`
-
-### Sqlite:
-Open the sqlite database
- `sqlite3 database.db`
-View the database schemas created
- `.schema`
-
-### Ignr:
-add .gitignore into python propject with the files and folders needed
- `ignr -p python > .gitignore`
-
-### gh:
-add project into your github repo by an interactive CLI
-  `ignr -p python > .gitignore`
-
-###fac
-
-- poetry shell ativa o ambiente virtual para que seja enxergue as dependencias  do projeto
-- poetry install instala as dependencias do projeto
+The repository shows how authentication, data ownership, migrations, and tests fit together in a small API. It also keeps quality checks in repeatable commands rather than relying only on manual route testing.
